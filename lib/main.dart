@@ -8,6 +8,8 @@ import 'dart:convert' as convert;
 import 'package:untitled2/Feedback_Model.dart';
 import 'package:untitled2/Lessons.dart';
 import 'package:untitled2/my_home_page.dart';
+import 'package:untitled2/stages_levels/Level1.dart';
+import 'package:untitled2/stages_levels/Level2.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
 
       routes: {
         SubjectsScreen.id:(context)=>SubjectsScreen(),
+        Level1.id:(context)=>Level1(),
+        Level2.id:(context)=>Level2(),
       },
     );
   }

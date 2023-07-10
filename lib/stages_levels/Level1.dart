@@ -1,26 +1,20 @@
-
+import 'package:flutter/material.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:untitled2/Lessons.dart';
 import 'package:untitled2/StageData.dart';
 import 'package:untitled2/lessons_info_from_excal.dart';
 
-import '';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'Feedback_Model.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:http/http.dart'as http;
-import 'dart:convert'as convert;
-class SubjectsScreen extends StatefulWidget {
-  static const id='subjectScreen';
-  SubjectsScreen({ Key? key}) : super(key: key);
+
+class Level1 extends StatefulWidget {
+  static const id='level1';
+  const Level1({Key? key}) : super(key: key);
 
   @override
-  State<SubjectsScreen> createState() => _SubjectsScreenState();
+  State<Level1> createState() => _Level1State();
 }
 
-
-
-class _SubjectsScreenState extends State<SubjectsScreen> {
+class _Level1State extends State<Level1> {
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +67,15 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
               SizedBox(
                 height: 30,
               ),
+              Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white70,
+                child: Center(child: Text('المرحلة الاولى',style: TextStyle(fontSize: 30),)),
+              ),
+              SizedBox(
+                height: 30,
+              ),
               Expanded(
                 child: GridView.count(
                   primary: false,
@@ -95,7 +98,6 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
     );
   }
 }
-
 class SubjectsCard extends StatelessWidget {
   IconData icons;
   String subTilte;

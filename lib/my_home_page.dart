@@ -11,6 +11,8 @@ import 'package:untitled2/StageData.dart';
 import 'dart:convert'as convert;
 
 import 'package:untitled2/lessons_info_from_excal.dart';
+import 'package:untitled2/stages_levels/Level1.dart';
+import 'package:untitled2/stages_levels/Level2.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -30,6 +32,35 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   int count=8;
 
+
+  void _showAlertDialog(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Comming soon',style: TextStyle(fontSize: 30),),
+        content: const Text('This level is locked',style: TextStyle(fontSize: 20),),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent,
+                  borderRadius:BorderRadius.circular(20),
+                ),
+                child: Center(child: const Text('Ok',style: TextStyle(fontSize: 30),))),
+          ),
+
+        ],
+      ),
+    );
+  }
 
   bool isClicked=false;
   double Top=300.0;
@@ -112,10 +143,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Center(
                                                   child: IconButton(
                                                     onPressed: (){
-                                                      Navigator.pushNamed(
-                                                        context,
-                                                         SubjectsScreen.id,
-                                                        arguments:ScreenArguments(title: 'level${index + 1}', color: Colors.white70));
+                                                      if(index+1 ==1) {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            Level1.id,
+                                                            arguments: ScreenArguments(
+                                                                title: 'level${index +
+                                                                    1}',
+                                                                color: Colors
+                                                                    .amberAccent));
+                                                      }
+                                                      else if(index+1==2)
+                                                        {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              Level2.id,
+                                                              arguments: ScreenArguments(
+                                                                  title: 'level${index +
+                                                                      1}',
+                                                                  color: Colors
+                                                                      .purpleAccent));
+                                                        }
+                                                      else {
+                                                        _showAlertDialog(context);
+                                                      }
                                                     },
                                                     icon: Icon(Icons.arrow_forward,size: 30,color: Colors.black,),
                                                   ),
