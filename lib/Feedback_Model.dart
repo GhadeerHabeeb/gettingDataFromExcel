@@ -11,6 +11,20 @@ class FeedBackModel
   String k1ScienceTitle;
   String k1ScienceYoutubeUrl;
   String k1ScienceLecture;
+  String k2ArabicTitle;
+  String k2ArabicYoutubeUrl;
+  String k2ArabicLectureTitle;
+  String k2ArabicLectureLink;
+  String k2MathTitle;
+  String k2MathYoutube;
+  String k2MathLecture;
+  String k2ScienceTitle;
+  String k2ScienceYoutube;
+  String k2ScienceLecture;
+  String k2EnglishTitle;
+  String k2EnglishYoutube;
+  String k2EnglishLecture;
+
 
 
   FeedBackModel({
@@ -21,7 +35,20 @@ class FeedBackModel
   required this.k1ScienceTitle,
   required this.k1ScienceYoutubeUrl,
   required this.k1MathLecture,
-  required this.k1ScienceLecture});
+  required this.k1ScienceLecture,
+  required this.k2ArabicLectureTitle,
+  required this.k2ArabicLectureLink,
+  required this.k2ArabicTitle,
+  required this.k2ArabicYoutubeUrl,
+  required this.k2MathTitle,
+  required this.k2MathYoutube,
+  required this.k2MathLecture,
+  required this.k2ScienceTitle,
+  required this.k2ScienceYoutube,
+  required this.k2ScienceLecture,
+  required this.k2EnglishTitle,
+  required this.k2EnglishYoutube,
+  required this.k2EnglishLecture});
   factory FeedBackModel.fromJson(dynamic json)
   {
     return FeedBackModel(
@@ -32,7 +59,22 @@ class FeedBackModel
         k1MathLecture:"${json['K1_math_lecture']}",
         k1ScienceTitle:"${json['K1_science_title']}",
       k1ScienceYoutubeUrl: "${json['K1_science_youtube_url']}",
-        k1ScienceLecture: "${json['K1_science_lecture']}"
+        k1ScienceLecture: "${json['K1_science_lecture']}",
+      k2ArabicTitle: "${json['K2_arabic_title']}",
+      k2ArabicYoutubeUrl: "${json['K2_arabic_youtube_url']}",
+      k2ArabicLectureTitle: '${json['K2_arabic_lecture']}',
+      k2ArabicLectureLink: '${json['K2_arabic_lecture_link']}',
+      k2MathTitle: '${json['K2_math_title']}',
+      k2MathYoutube: '${json['K2_math_youtube_url']}',
+      k2MathLecture: '${json['K2_math_lecture']}',
+      k2ScienceTitle: '${json['K2_science_title']}',
+      k2ScienceLecture: '${json['K2_science_lecture']}',
+      k2ScienceYoutube: '${json['K2_science_youtube_url']}',
+      k2EnglishTitle: '${json['K2_english_title']}',
+      k2EnglishLecture: '${json['K2_english_lecture']}',
+      k2EnglishYoutube: '${json['K2_english_youtube_url']}'
+
+
     );
 
   }

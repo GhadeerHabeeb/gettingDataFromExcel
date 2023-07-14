@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ScreenArguments {
-  final String title;
+  final String level;
   final Color color;
 
-  ScreenArguments({  required this.title,  required this.color});
+  ScreenArguments({  required this.level,  required this.color});
 }
 

@@ -14,7 +14,7 @@ class _LectureResultState extends State<LectureResult> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Image.network(widget.lectureResult),
+          child:Image.network(widget.lectureResult),
         ),
       ),
     );

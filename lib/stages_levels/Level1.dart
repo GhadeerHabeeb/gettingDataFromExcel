@@ -47,7 +47,7 @@ class _Level1State extends State<Level1> {
                           clipBehavior:Clip.antiAlias,
                           children: [
                             Center(
-                                child:  Text(args.title,style: TextStyle(color: Colors.white,fontSize: 20),)
+                                child:  Text(args.level,style: TextStyle(color: Colors.white,fontSize: 20),)
                             ),]
                       ),
                       decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class SubjectsCard extends StatelessWidget {
     return GestureDetector(
       onTap: (){
 
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>LessonsScreen(lessonTitle:subTilte,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>LessonsScreen(lessonTitle:subTilte,level: args.level,)));
       },
       child: Column(
         children: [

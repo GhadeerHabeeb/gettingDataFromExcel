@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                             context,
                                                             Level1.id,
                                                             arguments: ScreenArguments(
-                                                                title: 'level${index +
+                                                                level: 'level${index +
                                                                     1}',
                                                                 color: Colors
                                                                     .amberAccent));
@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               context,
                                                               Level2.id,
                                                               arguments: ScreenArguments(
-                                                                  title: 'level${index +
+                                                                  level: 'level${index +
                                                                       1}',
                                                                   color: Colors
                                                                       .purpleAccent));

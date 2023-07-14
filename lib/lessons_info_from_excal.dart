@@ -10,46 +10,64 @@ import 'package:untitled2/video.dart';
 
 class LessonsScreen extends StatefulWidget {
   final String lessonTitle;
-  const LessonsScreen({required this.lessonTitle,Key? key}) : super(key: key);
-
+  final String level;
+   const LessonsScreen({required this.level,required this.lessonTitle,Key? key}) : super(key: key);
   @override
   State<LessonsScreen> createState() => _LessonsScreenState();
 }
 String Title='';
 String video='';
 String result='';
-void WhatLesson(String lessonTitle,int index)
+
+void WhatLesson(String lessonTitle,int index,String level)
 {
-  if(lessonTitle=='Math')
-    {
-
-     Title= '${feedbacks[index].k1MathTitle}';
-     video='${feedbacks[index].k1MathYoutubeUrl}';
-     result='${feedbacks[index].k1MathLecture}';
-
+if(level=='level1')
+{
+    if (lessonTitle == 'Math') {
+      Title = '${feedbacks[index].k1MathTitle}';
+      video = '${feedbacks[index].k1MathYoutubeUrl}';
+      result = '${feedbacks[index].k1MathLecture}';
+    } else if (lessonTitle == 'Reading') {
+      Title = '${feedbacks[index].k1ArabicTitle}';
+      video = '${feedbacks[index].k1ArabicYoutubeUrl}';
+      result = '';
+    } else if (lessonTitle == 'Science') {
+      Title = '${feedbacks[index].k1ScienceTitle}';
+      video = '${feedbacks[index].k1ScienceYoutubeUrl}';
+      result = '${feedbacks[index].k1ScienceLecture}';
+    } else {
+      Title = '';
+      video = '';
+      result = '';
     }
-  else if(lessonTitle=='Reading')
-      {
-           Title= '${feedbacks[index].k1ArabicTitle}';
-           video='${feedbacks[index].k1ArabicYoutubeUrl}';
-           result='';
-      }
-  else if(lessonTitle=='Science')
-  {
-    Title= '${feedbacks[index].k1ScienceTitle}';
-    video='${feedbacks[index].k1ScienceYoutubeUrl}';
-    result='${feedbacks[index].k1ScienceLecture}';
-
   }
-  else
+else if(level=='level2')
     {
-         Title= '';
-         video='';
-         result='';
+      if (lessonTitle == 'Math') {
+        Title = '${feedbacks[index].k2MathTitle}';
+        video = '${feedbacks[index].k2MathYoutube}';
+        result = '${feedbacks[index].k2MathLecture}';
+      }
+      else if (lessonTitle == 'Science') {
+        Title = '${feedbacks[index].k2ScienceTitle}';
+        video = '${feedbacks[index].k2ScienceYoutube}';
+        result = '${feedbacks[index].k2ScienceLecture}';
+      }
+      else if (lessonTitle == 'English') {
+        Title = '${feedbacks[index].k2EnglishTitle}';
+        video = '${feedbacks[index].k2EnglishYoutube}';
+        result = '${feedbacks[index].k2EnglishLecture}';
+      }
+      else {
+        Title = '';
+        video = '';
+        result = '';
+      }
     }
+
 }
 List<FeedBackModel> feedbacks=<FeedBackModel>[];
-String apiEndpoint="https://script.google.com/macros/s/AKfycbwzltHCsTKy_MffxijzVCWpCfOFNFOjyN-gsInd_Uig6kT3PliASj0Pi5p3MFiKhD5P/exec";
+String apiEndpoint="https://script.google.com/macros/s/AKfycbx1r-Gg5zqkK-bzrmXI7KO6Ck0XY87A6hgwMsu0Gm9_mgfU_9nzFy9FWRPAwv7aRO5-/exec";
 
 Future<List<FeedBackModel>? > getFeedbackFromSheet()
 async{
@@ -68,8 +86,6 @@ async{
       var jsonsDataDecode=convert.jsonDecode(jsonsDataString);
       print(jsonsDataDecode);
       jsonsDataDecode.forEach((element){
-        print('${element} next element>>>>>');
-        print('${element['K1_math_lecture']} next element>>>>>');
 
          FeedBackModel feedbackModel=new FeedBackModel(
              k1ArabicTitle: element['K1_arabic_title'],
@@ -79,7 +95,21 @@ async{
              k1ScienceTitle: element['K1_science_title'],
              k1ScienceYoutubeUrl:element['K1_science_youtube_url'],
              k1MathLecture: element['K1_math_lecture'],
-             k1ScienceLecture:element['K1_science_lecture'] );
+             k1ScienceLecture:element['K1_science_lecture'],
+             k2ArabicLectureTitle: element['K2_arabic_lecture'],
+             k2ArabicLectureLink: element['K2_arabic_lecture_link'],
+             k2ArabicTitle: element['K2_arabic_title'],
+             k2ArabicYoutubeUrl: element['K2_arabic_youtube_url'],
+           k2MathTitle: element['K2_math_title'],
+           k2MathLecture: element['K2_math_lecture'],
+           k2MathYoutube: element['K2_math_youtube_url'],
+           k2ScienceTitle:element['K2_science_title'],
+           k2ScienceLecture: element['K2_science_lecture'],
+           k2ScienceYoutube: element['K2_science_youtube_url'],
+           k2EnglishTitle: element['K2_english_title'],
+           k2EnglishLecture: element['K2_english_lecture'],
+           k2EnglishYoutube: element['K2_english_youtube_url'],
+         );
 
 
 feedbacks.add(feedbackModel);
@@ -96,16 +126,13 @@ print(feedbacks.length);
 }
 
 
-@override
-void initState() {
-  initState();
-
-}
 
 class _LessonsScreenState extends State<LessonsScreen> {
   @override
   Widget build(BuildContext context) {
-    getFeedbackFromSheet();
+    setState(() {
+      getFeedbackFromSheet();
+    });
 
      return Scaffold(
       body: Stack(
@@ -114,10 +141,9 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
             itemCount: feedbacks.length,
             itemBuilder: (BuildContext context, int index) {
-              WhatLesson(widget.lessonTitle, index);
+              WhatLesson(widget.lessonTitle, index,widget.level);
               return video==''?Container(
-                color: Colors.amberAccent,
-                child: Center(child: Text(Title ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,)),
+               color:Colors.amberAccent,
               ):Padding(
                 padding:  EdgeInsets.all(8.0),
                 child: Center(
@@ -140,7 +166,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
 
-                          Text(Title ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,),
+                          Text(Title ,style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
                           SizedBox(
                             height: 10,
                           ),
@@ -155,8 +181,8 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
                           ),
                               onPressed: (){
-                                WhatLesson(widget.lessonTitle,index);
-
+                                WhatLesson(widget.lessonTitle,index,widget.level);
+                                print(widget.level);
                                 Navigator.push(context,  MaterialPageRoute(builder: (context) =>   Video(id: video,index: index,)));
                               }, child: Text('watch video',style: TextStyle(fontSize: 25))),
                           SizedBox(
@@ -174,7 +200,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
                               ),
                               onPressed: (){
-                                WhatLesson(widget.lessonTitle,index);
+                                WhatLesson(widget.lessonTitle,index,widget.level);
                                 print(video);
                                 print(result);
                                 Navigator.push(context,  MaterialPageRoute(builder: (context) => LectureResult(lectureResult: result,)));

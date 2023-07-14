@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:untitled2/Screens/k2_arabic_lesson_screen.dart';
 import 'package:untitled2/StageData.dart';
 import 'package:untitled2/lessons_info_from_excal.dart';
+import 'package:untitled2/Screens/reading_screen.dart';
 import 'package:untitled2/stages_levels/Level1.dart';
 class Level2 extends StatefulWidget {
   static const id='level2';
@@ -43,7 +45,7 @@ class _Level2State extends State<Level2> {
                         clipBehavior:Clip.antiAlias,
                         children: [
                           Center(
-                              child:  Text(args.title,style: TextStyle(color: Colors.white,fontSize: 20),)
+                              child:  Text(args.level,style: TextStyle(color: Colors.white,fontSize: 20),)
                           ),]
                     ),
                     decoration: BoxDecoration(
@@ -83,6 +85,7 @@ class _Level2State extends State<Level2> {
                   SubjectsCard(args: args,icons:Icons.add,subTilte: 'Math',),
                   SubjectsCard(args: args,icons:Icons.science,subTilte: 'Science',),
                   SubjectsCard(args: args,icons:Icons.menu_book,subTilte: 'Reading',),
+                  SubjectsCard(args: args,icons:Icons.menu_book,subTilte: 'English',),
 
                 ],
               ),
@@ -109,7 +112,14 @@ class SubjectsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-
+         if(subTilte=='Reading')
+           {
+             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArabicLessonsScreen()));
+           }
+         else
+           {
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>LessonsScreen(lessonTitle:subTilte,level: args.level)));
+           }
       },
       child: Column(
         children: [
