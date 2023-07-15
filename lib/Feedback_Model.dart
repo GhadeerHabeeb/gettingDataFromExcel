@@ -11,6 +11,9 @@ class FeedBackModel
   String k1ScienceTitle;
   String k1ScienceYoutubeUrl;
   String k1ScienceLecture;
+  String k1EnglishTitle;
+  String k1EnglishYoutube;
+  String k1EnglishLecture;
   String k2ArabicTitle;
   String k2ArabicYoutubeUrl;
   String k2ArabicLectureTitle;
@@ -36,6 +39,9 @@ class FeedBackModel
   required this.k1ScienceYoutubeUrl,
   required this.k1MathLecture,
   required this.k1ScienceLecture,
+    required this.k1EnglishTitle,
+    required this.k1EnglishYoutube,
+    required this.k1EnglishLecture,
   required this.k2ArabicLectureTitle,
   required this.k2ArabicLectureLink,
   required this.k2ArabicTitle,
@@ -60,6 +66,9 @@ class FeedBackModel
         k1ScienceTitle:"${json['K1_science_title']}",
       k1ScienceYoutubeUrl: "${json['K1_science_youtube_url']}",
         k1ScienceLecture: "${json['K1_science_lecture']}",
+        k1EnglishTitle: '${json['K1_english_title']}',
+        k1EnglishLecture: '${json['K1_english_lecture']}',
+        k1EnglishYoutube: '${json['K1_english_youtube_url']}',
       k2ArabicTitle: "${json['K2_arabic_title']}",
       k2ArabicYoutubeUrl: "${json['K2_arabic_youtube_url']}",
       k2ArabicLectureTitle: '${json['K2_arabic_lecture']}',
@@ -73,7 +82,6 @@ class FeedBackModel
       k2EnglishTitle: '${json['K2_english_title']}',
       k2EnglishLecture: '${json['K2_english_lecture']}',
       k2EnglishYoutube: '${json['K2_english_youtube_url']}'
-
 
     );
 

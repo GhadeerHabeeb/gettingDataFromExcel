@@ -87,6 +87,7 @@ class _Level1State extends State<Level1> {
                     SubjectsCard(args: args,icons:Icons.add,subTilte: 'Math',),
                     SubjectsCard(args: args,icons:Icons.science,subTilte: 'Science',),
                     SubjectsCard(args: args,icons:Icons.menu_book,subTilte: 'Reading',),
+                    SubjectsCard(args: args,icons:Icons.menu_book,subTilte: 'English',),
 
                   ],
                 ),

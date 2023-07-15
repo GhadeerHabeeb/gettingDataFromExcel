@@ -18,7 +18,8 @@ class LessonsScreen extends StatefulWidget {
 String Title='';
 String video='';
 String result='';
-
+String LevelName='';
+bool thereIsData=false;
 void WhatLesson(String lessonTitle,int index,String level)
 {
 if(level=='level1')
@@ -35,11 +36,17 @@ if(level=='level1')
       Title = '${feedbacks[index].k1ScienceTitle}';
       video = '${feedbacks[index].k1ScienceYoutubeUrl}';
       result = '${feedbacks[index].k1ScienceLecture}';
-    } else {
+    }     else if (lessonTitle == 'English') {
+      Title = '${feedbacks[index].k1EnglishTitle}';
+      video = '${feedbacks[index].k1EnglishYoutube}';
+      result = '${feedbacks[index].k1EnglishLecture}';
+    }
+    else {
       Title = '';
       video = '';
       result = '';
     }
+    LevelName='مرحلة اولى';
   }
 else if(level=='level2')
     {
@@ -63,13 +70,14 @@ else if(level=='level2')
         video = '';
         result = '';
       }
+      LevelName='مرحلة ثانية';
     }
 
 }
 List<FeedBackModel> feedbacks=<FeedBackModel>[];
-String apiEndpoint="https://script.google.com/macros/s/AKfycbx1r-Gg5zqkK-bzrmXI7KO6Ck0XY87A6hgwMsu0Gm9_mgfU_9nzFy9FWRPAwv7aRO5-/exec";
+String apiEndpoint="https://script.google.com/macros/s/AKfycbzgCvxt-tqIeyTgqEK_kPIAWVUaBMiF3e1zVE53Df9d_brrkIUppH14RbJuz8VQOetw/exec";
 
-Future<List<FeedBackModel>? > getFeedbackFromSheet()
+getFeedbackFromSheet()
 async{
   try {
     print('hello world');
@@ -82,7 +90,7 @@ async{
 
     if (response.statusCode == 200) {
       var jsonsDataString = response.body.toString(); // toString of Response's body is assigned to jsonDataString
-
+      thereIsData=true;
       var jsonsDataDecode=convert.jsonDecode(jsonsDataString);
       print(jsonsDataDecode);
       jsonsDataDecode.forEach((element){
@@ -96,6 +104,9 @@ async{
              k1ScienceYoutubeUrl:element['K1_science_youtube_url'],
              k1MathLecture: element['K1_math_lecture'],
              k1ScienceLecture:element['K1_science_lecture'],
+             k1EnglishTitle: element['K1_english_title'],
+             k1EnglishYoutube: element['K1_english_youtube_url'],
+             k1EnglishLecture: element['K1_english_lecture'],
              k2ArabicLectureTitle: element['K2_arabic_lecture'],
              k2ArabicLectureLink: element['K2_arabic_lecture_link'],
              k2ArabicTitle: element['K2_arabic_title'],
@@ -116,6 +127,7 @@ feedbacks.add(feedbackModel);
 print(feedbacks.length);
       });
 
+      print(thereIsData);
     };
 
   } catch (err) {
@@ -127,22 +139,36 @@ print(feedbacks.length);
 
 
 
+
 class _LessonsScreenState extends State<LessonsScreen> {
+
+  @override
+  void initState() {
+   setState(() {
+     getFeedbackFromSheet();
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getFeedbackFromSheet();
-    });
+
 
      return Scaffold(
       body: Stack(
         children: [
-          ListView.builder(
+         thereIsData==false?Center(
+            child: CircularProgressIndicator(
+              color: Colors.amber,
+              strokeWidth: 24,
+
+            ),
+         ): ListView.builder(
 
             itemCount: feedbacks.length,
             itemBuilder: (BuildContext context, int index) {
               WhatLesson(widget.lessonTitle, index,widget.level);
-              return video==''?Container(
+              final numLines = '\n'.allMatches(Title).length + 1;
+              return video==''||Title==''?Container(
                color:Colors.amberAccent,
               ):Padding(
                 padding:  EdgeInsets.all(8.0),
@@ -159,14 +185,14 @@ class _LessonsScreenState extends State<LessonsScreen> {
                       )],
                       ),
 
-                      height: 300,
+                      height:numLines<=2? 300:500,
                       width: 400,
                     child:  Container(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
 
-                          Text(Title ,style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
+                          Text(Title ,style: TextStyle(fontSize: 26),textAlign: TextAlign.center,),
                           SizedBox(
                             height: 10,
                           ),
@@ -181,9 +207,11 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
                           ),
                               onPressed: (){
-                                WhatLesson(widget.lessonTitle,index,widget.level);
-                                print(widget.level);
-                                Navigator.push(context,  MaterialPageRoute(builder: (context) =>   Video(id: video,index: index,)));
+                               setState(() {
+                                 WhatLesson(widget.lessonTitle,index,widget.level);
+                                 print(widget.level);
+                                 Navigator.push(context,  MaterialPageRoute(builder: (context) =>   Video(id: video,index: index,)));
+                               });
                               }, child: Text('watch video',style: TextStyle(fontSize: 25))),
                           SizedBox(
                             height: 10,
@@ -200,10 +228,11 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
                               ),
                               onPressed: (){
-                                WhatLesson(widget.lessonTitle,index,widget.level);
-                                print(video);
-                                print(result);
-                                Navigator.push(context,  MaterialPageRoute(builder: (context) => LectureResult(lectureResult: result,)));
+                               setState(() {
+                                 WhatLesson(widget.lessonTitle,index,widget.level);
+                                 print(numLines);
+                                 Navigator.push(context,  MaterialPageRoute(builder: (context) => LectureResult(lectureResult: result,)));
+                               });
                               }, child: Text('watch result',style: TextStyle(fontSize: 25)))
 
                         ],
@@ -241,7 +270,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                       ),
                     ),
                   ),
-                  Text('المرحلة الاول',style: TextStyle(fontSize: 30,color: Colors.amberAccent),),
+                  Text(LevelName,style: TextStyle(fontSize: 30,color: Colors.amberAccent),),
                   SizedBox(
                     height: 50,
                     width: 50,
