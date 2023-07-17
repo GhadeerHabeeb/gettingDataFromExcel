@@ -18,10 +18,28 @@ class LessonsScreen extends StatefulWidget {
 String Title='';
 String video='';
 String result='';
-String LevelName='';
+var LevelName='';
+
 bool thereIsData=false;
+
+Level(String level)
+{
+  if(level=='level1')
+    {
+      LevelName='المرحلة الاولى';
+
+    }
+  else if(level=='level2')
+    {
+      LevelName='المرحلة الثاني';
+    }
+  else{
+    LevelName='';
+  }
+}
 void WhatLesson(String lessonTitle,int index,String level)
 {
+
 if(level=='level1')
 {
     if (lessonTitle == 'Math') {
@@ -46,7 +64,7 @@ if(level=='level1')
       video = '';
       result = '';
     }
-    LevelName='مرحلة اولى';
+
   }
 else if(level=='level2')
     {
@@ -70,7 +88,7 @@ else if(level=='level2')
         video = '';
         result = '';
       }
-      LevelName='مرحلة ثانية';
+
     }
 
 }
@@ -144,9 +162,10 @@ class _LessonsScreenState extends State<LessonsScreen> {
 
   @override
   void initState() {
-   setState(() {
+
      getFeedbackFromSheet();
-   });
+     Level(widget.level);
+
     super.initState();
   }
   @override
@@ -230,7 +249,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                               onPressed: (){
                                setState(() {
                                  WhatLesson(widget.lessonTitle,index,widget.level);
-                                 print(numLines);
+
                                  Navigator.push(context,  MaterialPageRoute(builder: (context) => LectureResult(lectureResult: result,)));
                                });
                               }, child: Text('watch result',style: TextStyle(fontSize: 25)))
