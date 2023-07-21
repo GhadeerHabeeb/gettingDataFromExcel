@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:untitled2/Feedback_Model.dart';
-import 'package:http/http.dart'as http;
+
 import 'package:untitled2/Lecture_result.dart';
 import 'dart:convert'as convert;
-
+import 'package:http/http.dart'as http;
 import 'package:untitled2/Video_screen.dart';
 import 'package:untitled2/video.dart';
 
@@ -37,7 +37,7 @@ Level(String level)
     LevelName='';
   }
 }
-void WhatLesson(String lessonTitle,int index,String level)
+WhatLesson(String lessonTitle,int index,String level)
 {
 
 if(level=='level1')
@@ -98,6 +98,7 @@ String apiEndpoint="https://script.google.com/macros/s/AKfycbzgCvxt-tqIeyTgqEK_k
 getFeedbackFromSheet()
 async{
   try {
+
     print('hello world');
     // Replace with your own api url
 
@@ -155,7 +156,10 @@ print(feedbacks.length);
   }
 }
 
+LineNumbers(String text)
+{
 
+}
 
 
 class _LessonsScreenState extends State<LessonsScreen> {
@@ -163,29 +167,40 @@ class _LessonsScreenState extends State<LessonsScreen> {
   @override
   void initState() {
 
-     getFeedbackFromSheet();
-     Level(widget.level);
+    setState(() {
 
+      Level(widget.level);
+
+    });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-
+    getFeedbackFromSheet();
 
      return Scaffold(
       body: Stack(
         children: [
-         thereIsData==false?Center(
-            child: CircularProgressIndicator(
-              color: Colors.amber,
-              strokeWidth: 24,
-
-            ),
-         ): ListView.builder(
+          thereIsData==true? ListView.builder(
 
             itemCount: feedbacks.length,
             itemBuilder: (BuildContext context, int index) {
-              WhatLesson(widget.lessonTitle, index,widget.level);
+              final numLines = '\n'.allMatches(Title).length + 1;
+              return  FeedbacksTile(
+                lessonTitle: widget.lessonTitle,
+                numLines: numLines,
+                index: index,
+
+              level: widget.level,);
+
+
+
+
+
+
+
+
+            /*  WhatLesson(widget.lessonTitle, index,widget.level);
               final numLines = '\n'.allMatches(Title).length + 1;
               return video==''||Title==''?Container(
                color:Colors.amberAccent,
@@ -259,10 +274,17 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     ),
                       ),
                 ),
-              );
+              );*/
             },
-          ),
-          Container(
+          ):Center(
+     child: LinearProgressIndicator(
+
+     backgroundColor: Colors.amber,
+       color: Colors.yellow,
+
+     ),
+    ),
+        Container(
             height: 90,
             width: MediaQuery.of(context).size.width,
 
@@ -304,3 +326,91 @@ class _LessonsScreenState extends State<LessonsScreen> {
     );
   }
 }
+
+class FeedbacksTile extends StatelessWidget {
+  String level;
+  String lessonTitle;
+  int index;
+  int numLines;
+
+    FeedbacksTile({required this.lessonTitle, required this.numLines,required this.index ,required this.level,Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    WhatLesson(lessonTitle, index, level);
+    return video==''||result==''?Container(
+      color:Colors.amberAccent,
+    ):Padding(
+      padding:  EdgeInsets.all(8.0),
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+            boxShadow: [BoxShadow(
+                blurRadius: 0.9,
+                spreadRadius: 0.9,
+                color: Colors.grey,
+                offset: Offset(3, 4)
+            )],
+          ),
+
+          height:numLines<5? 300:500,
+          width: 400,
+          child:  Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                Text(Title ,style: TextStyle(fontSize: 26),textAlign: TextAlign.center,),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amberAccent,
+                      side: BorderSide(
+                          width: 0.2,
+                          color: Colors.grey
+                      ),
+                      minimumSize: Size(100, 50),
+
+                    ),
+                    onPressed: (){
+
+                        WhatLesson(lessonTitle,index,level);
+                        print(level);
+                        Navigator.push(context,  MaterialPageRoute(builder: (context) =>   Video(id: video,index: index,)));
+
+                    }, child: Text('watch video',style: TextStyle(fontSize: 25))),
+                SizedBox(
+                  height: 10,
+                ),
+
+                result==''?Container():ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xffFFE4A0FF),
+                      side: BorderSide(
+                          width: 0.2,
+                          color: Colors.grey
+                      ),
+                      minimumSize: Size(100, 50),
+
+                    ),
+                    onPressed: (){
+                        print(numLines);
+                        WhatLesson(lessonTitle,index,level);
+
+                        Navigator.push(context,  MaterialPageRoute(builder: (context) => LectureResult(lectureResult: result,)));
+
+                    }, child: Text('watch result',style: TextStyle(fontSize: 25)))
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

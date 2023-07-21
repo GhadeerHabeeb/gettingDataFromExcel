@@ -24,6 +24,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
       body:  SafeArea(
