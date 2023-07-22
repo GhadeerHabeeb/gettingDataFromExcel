@@ -4,6 +4,7 @@ import 'package:untitled2/Feedback_Model.dart';
 import 'package:untitled2/Lecture_result.dart';
 import 'dart:convert'as convert;
 import 'package:http/http.dart'as http;
+import 'package:untitled2/Screens/reading_screen.dart';
 import 'package:untitled2/Video_screen.dart';
 import 'package:untitled2/video.dart';
 
@@ -40,8 +41,8 @@ Level(String level)
 WhatLesson(String lessonTitle,int index,String level)
 {
 
-if(level=='level1')
-{
+  if(level=='level1')
+  {
     if (lessonTitle == 'Math') {
       Title = '${feedbacks[index].k1MathTitle}';
       video = '${feedbacks[index].k1MathYoutubeUrl}';
@@ -66,95 +67,36 @@ if(level=='level1')
     }
 
   }
-else if(level=='level2')
-    {
-      if (lessonTitle == 'Math') {
-        Title = '${feedbacks[index].k2MathTitle}';
-        video = '${feedbacks[index].k2MathYoutube}';
-        result = '${feedbacks[index].k2MathLecture}';
-      }
-      else if (lessonTitle == 'Science') {
-        Title = '${feedbacks[index].k2ScienceTitle}';
-        video = '${feedbacks[index].k2ScienceYoutube}';
-        result = '${feedbacks[index].k2ScienceLecture}';
-      }
-      else if (lessonTitle == 'English') {
-        Title = '${feedbacks[index].k2EnglishTitle}';
-        video = '${feedbacks[index].k2EnglishYoutube}';
-        result = '${feedbacks[index].k2EnglishLecture}';
-      }
-      else {
-        Title = '';
-        video = '';
-        result = '';
-      }
-
+  else if(level=='level2')
+  {
+    if (lessonTitle == 'Math') {
+      Title = '${feedbacks[index].k2MathTitle}';
+      video = '${feedbacks[index].k2MathYoutube}';
+      result = '${feedbacks[index].k2MathLecture}';
+    }
+    else if (lessonTitle == 'Science') {
+      Title = '${feedbacks[index].k2ScienceTitle}';
+      video = '${feedbacks[index].k2ScienceYoutube}';
+      result = '${feedbacks[index].k2ScienceLecture}';
+    }
+    else if (lessonTitle == 'English') {
+      Title = '${feedbacks[index].k2EnglishTitle}';
+      video = '${feedbacks[index].k2EnglishYoutube}';
+      result = '${feedbacks[index].k2EnglishLecture}';
+    }
+    else {
+      Title = '';
+      video = '';
+      result = '';
     }
 
+  }
+
 }
+
 List<FeedBackModel> feedbacks=<FeedBackModel>[];
 String apiEndpoint="https://script.google.com/macros/s/AKfycbzgCvxt-tqIeyTgqEK_kPIAWVUaBMiF3e1zVE53Df9d_brrkIUppH14RbJuz8VQOetw/exec";
 
-getFeedbackFromSheet()
-async{
-  try {
-
-    print('hello world');
-    // Replace with your own api url
-
-    final Uri url = Uri.parse(apiEndpoint);
-    print(url);
-    var response = await http.get(url);
-    print('hiii!$response');
-
-    if (response.statusCode == 200) {
-      var jsonsDataString = response.body.toString(); // toString of Response's body is assigned to jsonDataString
-      thereIsData=true;
-      var jsonsDataDecode=convert.jsonDecode(jsonsDataString);
-      print(jsonsDataDecode);
-      jsonsDataDecode.forEach((element){
-
-         FeedBackModel feedbackModel=new FeedBackModel(
-             k1ArabicTitle: element['K1_arabic_title'],
-             k1ArabicYoutubeUrl:  element['k1_arabic_youtube_url'],
-             k1MathTitle:  element['K1_math_title'],
-             k1MathYoutubeUrl:  element['K1_math_youtube_url'],
-             k1ScienceTitle: element['K1_science_title'],
-             k1ScienceYoutubeUrl:element['K1_science_youtube_url'],
-             k1MathLecture: element['K1_math_lecture'],
-             k1ScienceLecture:element['K1_science_lecture'],
-             k1EnglishTitle: element['K1_english_title'],
-             k1EnglishYoutube: element['K1_english_youtube_url'],
-             k1EnglishLecture: element['K1_english_lecture'],
-             k2ArabicLectureTitle: element['K2_arabic_lecture'],
-             k2ArabicLectureLink: element['K2_arabic_lecture_link'],
-             k2ArabicTitle: element['K2_arabic_title'],
-             k2ArabicYoutubeUrl: element['K2_arabic_youtube_url'],
-           k2MathTitle: element['K2_math_title'],
-           k2MathLecture: element['K2_math_lecture'],
-           k2MathYoutube: element['K2_math_youtube_url'],
-           k2ScienceTitle:element['K2_science_title'],
-           k2ScienceLecture: element['K2_science_lecture'],
-           k2ScienceYoutube: element['K2_science_youtube_url'],
-           k2EnglishTitle: element['K2_english_title'],
-           k2EnglishLecture: element['K2_english_lecture'],
-           k2EnglishYoutube: element['K2_english_youtube_url'],
-         );
-
-
-feedbacks.add(feedbackModel);
-print(feedbacks.length);
-      });
-
-      print(thereIsData);
-    };
-
-  } catch (err) {
-    // Handling error
-
-    print('error ${err}');
-  }
-}
 
 LineNumbers(String text)
 {
@@ -164,19 +106,79 @@ LineNumbers(String text)
 
 class _LessonsScreenState extends State<LessonsScreen> {
 
-  @override
-  void initState() {
 
+  getFeedbackFromSheet()
+  async{
+    try {
+
+      print('hello world');
+      // Replace with your own api url
+
+      final Uri url = Uri.parse(apiEndpoint);
+      print(url);
+      var response = await http.get(url);
+      print('hiii!$response');
+
+      if (response.statusCode == 200) {
+        var jsonsDataString = response.body.toString(); // toString of Response's body is assigned to jsonDataString
+        thereIsData=true;
+        var jsonsDataDecode=convert.jsonDecode(jsonsDataString);
+        print(jsonsDataDecode);
+        jsonsDataDecode.forEach((element){
+
+          FeedBackModel feedbackModel=new FeedBackModel(
+            k1ArabicTitle: element['K1_arabic_title'],
+            k1ArabicYoutubeUrl:  element['k1_arabic_youtube_url'],
+            k1MathTitle:  element['K1_math_title'],
+            k1MathYoutubeUrl:  element['K1_math_youtube_url'],
+            k1ScienceTitle: element['K1_science_title'],
+            k1ScienceYoutubeUrl:element['K1_science_youtube_url'],
+            k1MathLecture: element['K1_math_lecture'],
+            k1ScienceLecture:element['K1_science_lecture'],
+            k1EnglishTitle: element['K1_english_title'],
+            k1EnglishYoutube: element['K1_english_youtube_url'],
+            k1EnglishLecture: element['K1_english_lecture'],
+            k2ArabicLectureTitle: element['K2_arabic_lecture'],
+            k2ArabicLectureLink: element['K2_arabic_lecture_link'],
+            k2ArabicTitle: element['K2_arabic_title'],
+            k2ArabicYoutubeUrl: element['K2_arabic_youtube_url'],
+            k2MathTitle: element['K2_math_title'],
+            k2MathLecture: element['K2_math_lecture'],
+            k2MathYoutube: element['K2_math_youtube_url'],
+            k2ScienceTitle:element['K2_science_title'],
+            k2ScienceLecture: element['K2_science_lecture'],
+            k2ScienceYoutube: element['K2_science_youtube_url'],
+            k2EnglishTitle: element['K2_english_title'],
+            k2EnglishLecture: element['K2_english_lecture'],
+            k2EnglishYoutube: element['K2_english_youtube_url'],
+          );
+
+
+          feedbacks.add(feedbackModel);
+          print(feedbacks.length);
+        });
+
+        print(thereIsData);
+      };
+
+    } catch (err) {
+      // Handling error
+
+      print('error ${err}');
+    }
     setState(() {
 
-      Level(widget.level);
-
     });
+  }
+  @override
+  void initState() {
+    Level(widget.level);
+    getFeedbackFromSheet();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    getFeedbackFromSheet();
+
 
      return Scaffold(
       body: Stack(
@@ -338,7 +340,7 @@ class FeedbacksTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WhatLesson(lessonTitle, index, level);
-    return video==''||result==''?Container(
+    return video==''?Container(
       color:Colors.amberAccent,
     ):Padding(
       padding:  EdgeInsets.all(8.0),
@@ -379,6 +381,7 @@ class FeedbacksTile extends StatelessWidget {
                     onPressed: (){
 
                         WhatLesson(lessonTitle,index,level);
+
                         print(level);
                         Navigator.push(context,  MaterialPageRoute(builder: (context) =>   Video(id: video,index: index,)));
 
